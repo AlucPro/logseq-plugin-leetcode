@@ -17,7 +17,9 @@
     "build": "parcel build --public-url . --no-source-maps index.html"
   },
   "logseq": {
-    "id": "logseq-plugin-leetcode"
+    "id": "logseq-plugin-leetcode",
+    "title": "logseq plugin leetcode",
+    "icon": "./icon.png"
   },
   "dependencies": {
     "@logseq/libs": "^0.0.12",

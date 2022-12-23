@@ -16,27 +16,31 @@ import {
 function main(baseInfo: LSPluginBaseInfo) {
   logseq.useSettingsSchema(LtcSetting);
   let loading = false;
-  logseq.provideModel({
-    async renderLeetCodePage() {
-      if (!settingCheck()) return;
-      if (loading) return;
 
-      const pageName = "Leetcode All Problems";
-      logseq.App.pushState("page", { name: pageName });
-      await delay(300);
-      loading = true;
+  logseq.Editor.registerSlashCommand("ltc all problems", async () => {
+    const b = await logseq.Editor.getCurrentBlock();
+    if (!b) {
+      logseq.App.showMsg("empty block", "warning");
+      return;
+    }
+    const { uuid } = b;
 
-      try {
-        const ltc = await getLtcIns();
-        const { allproblems } = await renderOverviewPage(pageName, ltc);
-        await renderProblemListPage(allproblems);
-      } catch (e) {
-        logseq.App.showMsg(e.toString(), "warning");
-        console.error(e);
-      } finally {
-        loading = false;
-      }
-    },
+    if (!settingCheck()) return;
+    if (loading) return;
+
+    await delay(300);
+    loading = true;
+
+    try {
+      const ltc = await getLtcIns();
+      const { allproblems } = await renderOverviewPage(uuid, ltc);
+      await renderProblemListPage(allproblems);
+    } catch (e) {
+      logseq.App.showMsg(e.toString(), "warning");
+      console.error(e);
+    } finally {
+      loading = false;
+    }
   });
 
   logseq.Editor.registerSlashCommand("ltc problem fetch", async () => {
@@ -59,16 +63,6 @@ function main(baseInfo: LSPluginBaseInfo) {
       logseq.App.showMsg(e.toString(), "warning");
       console.error(e);
     }
-  });
-
-  logseq.App.registerUIItem("toolbar", {
-    key: "logseq-leetcode",
-    template: `
-      <a data-on-click="renderLeetCodePage"
-         class="button">
-        <i class="ti ti-smile"></i>
-      </a>
-    `,
   });
 }
 

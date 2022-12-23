@@ -58,15 +58,9 @@ async function renderProblemListPage(
   });
 }
 
-async function renderOverviewPage(pageName: string, ltc: any) {
-  const currentPage = await logseq.Editor.getCurrentPage();
-  if (currentPage?.originalName !== pageName) throw new Error("page error");
-  let newBlock: any = await logseq.Editor.appendBlockInPage(
-    currentPage.uuid,
-    ""
-  );
+async function renderOverviewPage(blockUUID: string, ltc: any) {
   const targetBlock: any = await logseq.Editor.insertBlock(
-    newBlock.uuid,
+    blockUUID,
     "## Fetching leetcode problems to logseq ...",
     { before: true }
   );
@@ -86,7 +80,7 @@ async function renderOverviewPage(pageName: string, ltc: any) {
   );
 
   await logseq.Editor.updateBlock(
-    newBlock.uuid,
+    blockUUID,
     `## Leetcode updated at - ${new Date().toLocaleString()}`
   );
   return { allproblems };
