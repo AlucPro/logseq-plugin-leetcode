@@ -27,7 +27,6 @@ async function loadAllProblems(leetcode) {
 
   return pageSplit(problems2, 50);
 }
-
 async function getLtcIns() {
   const ltc = await getLoginedLeetcodeInstance(
     logseq.settings?.ltcName || "",

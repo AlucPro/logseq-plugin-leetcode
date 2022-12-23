@@ -4,7 +4,11 @@ import { delay } from "./src/ctrl/utils";
 import { LtcSetting } from "./src/model/setting";
 import { settingCheck } from "./src/ctrl/setting";
 import { getLtcIns } from "./src/ctrl/leetcode";
-import { renderProblemListPage, renderOverviewPage } from "./src/view/leetcode";
+import {
+  renderProblemListPage,
+  renderOverviewPage,
+  renderProblemDetailInBlock,
+} from "./src/view/leetcode";
 /**
  * main entry
  * @param baseInfo
@@ -33,6 +37,28 @@ function main(baseInfo: LSPluginBaseInfo) {
         loading = false;
       }
     },
+  });
+
+  logseq.Editor.registerSlashCommand("ltc problem fetch", async () => {
+    const b = await logseq.Editor.getCurrentBlock();
+    if (!b) {
+      logseq.App.showMsg("empty block", "warning");
+      return;
+    }
+
+    try {
+      const { content, uuid } = b;
+      const slug = (content || "").trim();
+      if (!slug) {
+        logseq.App.showMsg("please input problem slug", "warning");
+        return;
+      }
+
+      renderProblemDetailInBlock(uuid, slug);
+    } catch (e) {
+      logseq.App.showMsg(e.toString(), "warning");
+      console.error(e);
+    }
   });
 
   logseq.App.registerUIItem("toolbar", {

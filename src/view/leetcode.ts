@@ -9,6 +9,13 @@ async function renderProblemDetailInPage(pageID: string, problemSlug: string) {
   await logseq.Editor.appendBlockInPage(pageID, ctnt as any);
 }
 
+async function renderProblemDetailInBlock(blockUUID: string, slug: string) {
+  const detail = new Problem(slug);
+  await detail.detail();
+  const ctnt = detail.content || "empty content";
+  await logseq.Editor.insertBlock(blockUUID, ctnt);
+}
+
 function getProblemListViewData(
   allproblems: Record<string, ProblemLight[]>,
   key: string
@@ -90,4 +97,5 @@ export {
   getProblemListViewData,
   renderProblemListPage,
   renderOverviewPage,
+  renderProblemDetailInBlock,
 };
