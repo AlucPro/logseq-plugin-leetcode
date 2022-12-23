@@ -15,7 +15,6 @@ async function getLoginedLeetcodeInstance(
 async function loadAllProblems(leetcode) {
   const problems: Array<any> = await leetcode.getAllProblems();
   const problems2: Array<ProblemLight> = problems
-    .filter((v) => v.id < 100)
     .sort((a, b) => (a.id > b.id ? 1 : -1))
     .map((data) => {
       return {
