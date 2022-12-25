@@ -17,6 +17,28 @@ function main(baseInfo: LSPluginBaseInfo) {
   logseq.useSettingsSchema(LtcSetting);
   let loading = false;
 
+  logseq.Editor.registerSlashCommand("ltc problem fetch", async () => {
+    const b = await logseq.Editor.getCurrentBlock();
+    if (!b) {
+      logseq.App.showMsg("empty block", "warning");
+      return;
+    }
+
+    try {
+      const { content, uuid } = b;
+      const slug = (content || "").trim();
+      if (!slug) {
+        logseq.App.showMsg("please input problem slug", "warning");
+        return;
+      }
+
+      renderProblemDetailInBlock(uuid, slug);
+    } catch (e) {
+      logseq.App.showMsg(e.toString(), "warning");
+      console.error(e);
+    }
+  });
+
   logseq.Editor.registerSlashCommand("ltc all problems", async () => {
     const b = await logseq.Editor.getCurrentBlock();
     if (!b) {
@@ -40,28 +62,6 @@ function main(baseInfo: LSPluginBaseInfo) {
       console.error(e);
     } finally {
       loading = false;
-    }
-  });
-
-  logseq.Editor.registerSlashCommand("ltc problem fetch", async () => {
-    const b = await logseq.Editor.getCurrentBlock();
-    if (!b) {
-      logseq.App.showMsg("empty block", "warning");
-      return;
-    }
-
-    try {
-      const { content, uuid } = b;
-      const slug = (content || "").trim();
-      if (!slug) {
-        logseq.App.showMsg("please input problem slug", "warning");
-        return;
-      }
-
-      renderProblemDetailInBlock(uuid, slug);
-    } catch (e) {
-      logseq.App.showMsg(e.toString(), "warning");
-      console.error(e);
     }
   });
 }

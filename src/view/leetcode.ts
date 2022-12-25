@@ -80,7 +80,7 @@ async function renderOverviewPage(blockUUID: string, ltc: any) {
   );
 
   await logseq.Editor.updateBlock(
-    blockUUID,
+    targetBlock.uuid,
     `## Leetcode updated at - ${new Date().toLocaleString()}`
   );
   return { allproblems };
