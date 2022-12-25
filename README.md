@@ -16,9 +16,9 @@ It provides two commands: `ltc all problems` and `ltc fetch problem`.
 This command will fetch all leetcode problems, and builds tree page.
 This command will only create `leetcode hot 100` problems detail page.If you want fetch speical problem detail in your page or block, using `ltc fetch problem` cmd.
 
-![](./doc/logseq-plugin-leetcode.MOV)
+![](./doc/case0.png)
 ![](./doc/case1.png)
-![](./doc/case2.png
+![](./doc/case2.png)
 
 ### ltc fetch problem
 
